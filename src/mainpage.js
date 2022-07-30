@@ -5,6 +5,7 @@ import cart2 from './cart2.png'
 import { Link, useNavigate } from "react-router-dom"
 import userContext from "./usercontext";
 import {useFormik} from 'formik'
+import { config } from "./config";
 function Mainpage(){
 let [products,setproducts]=useState([]);
 let [count,setcount]=useState(0);
@@ -21,7 +22,7 @@ navigation("/cart")
 
     let fetchData = async () => {
       try{
-let res = await axios.get('http://localhost:3001/products',{
+let res = await axios.get(`${config.api}/products`,{
 headers: {
     Authorization: `${localStorage.getItem("react_app_token")}`,
   },
@@ -47,9 +48,9 @@ fetchData();
       let arr = [];
       let addtocart = async(id,name,price)=>{
 setcount(count+1);
-const login = await axios.post(`http://localhost:3001/addtocart`, {"buyer_id":id,"name":name,"price":price,"dateandtime":new Date()});
+const login = await axios.post(`${config.api}/addtocart`, {"buyer_id":id,"name":name,"price":price,"dateandtime":new Date()});
 
-const cartitems = await axios.get(`http://localhost:3001/addtocart`);
+const cartitems = await axios.get(`${config.api}/addtocart`);
 var arr = cartitems.data.map((x)=>{return(x.price)});
 var sum = arr.reduce((x,y)=>parseInt(x)+parseInt(y),0);
 var index = products.findIndex((x)=>x._id==id);
@@ -73,7 +74,7 @@ data.setproduct(sum);
             category : ""
         },
         onSubmit:async(values)=>{
-          let filter = await axios.post(`http://localhost:3001/filter`,values);
+          let filter = await axios.post(`${config.api}/filter`,values);
          setproducts(filter.data)
         }
       })
