@@ -35,7 +35,7 @@ useEffect(()=>{
 {
 cart.map((cart)=>{return(
     
-<li class="list-group-item">Product:{cart.name} - Price/hr:{cart.price} - startdate and time:{cart.dateandtime} <button className="btn btn-danger" onClick={()=>{deletecart(cart._id,cart.price)}}>Delete</button> </li>
+<li class="list-group-item">Product:{cart.name} - Price/hr:{cart.price} - startdate and time:{cart.dateandtime} - quantity:{cart.qty} <button className="btn btn-danger" onClick={()=>{deletecart(cart._id,cart.price)}}>Delete</button> </li>
 
 
 )

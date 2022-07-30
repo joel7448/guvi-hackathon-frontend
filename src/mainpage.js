@@ -48,7 +48,7 @@ fetchData();
       let arr = [];
       let addtocart = async(id,name,price)=>{
 setcount(count+1);
-const login = await axios.post(`${config.api}/addtocart`, {"buyer_id":id,"name":name,"price":price,"dateandtime":new Date()});
+const login = await axios.post(`${config.api}/addtocart`, {"buyer_id":id,"name":name,"price":price,"dateandtime":new Date(),qty:`${data.count}`});
 
 const cartitems = await axios.get(`${config.api}/addtocart`);
 var arr = cartitems.data.map((x)=>{return(x.price)});
@@ -82,6 +82,24 @@ data.setproduct(sum);
 let logout = ()=>{
     localStorage.removeItem("react_app_token");
     navigation("/");
+}
+
+let add=(id)=>{
+var find = products.findIndex((x)=>x._id==id);
+console.log(products[find])
+
+  data.setcount(data.count+1);
+  products[find].count = data.count;
+}
+
+let minus=(id)=>{
+ 
+  if(data.count==0){
+    data.setcount(0)
+  }
+  else{
+    data.setcount(data.count-1);
+  }
 }
 
 return (
@@ -118,7 +136,7 @@ return (
     <p class="card-text">{product.description}</p>
     <p class="card-text">{product.price_per_hour}/hr</p>
     <button class="btn btn-primary" onClick={()=>{addtocart(product._id,product.Name,product.price_per_hour,)}} disabled={product.istrue ? true:false}>Add to cart</button>
-    <button className="btn btn-info m-2">+</button>
+    <button className="btn btn-info m-2" onClick={()=>{add(product._id)}}>+</button> {product.count?data.count:0} <button className="btn btn-danger m-2" onClick={()=>{minus(product._id)}}>-</button>
   </div>
 </div>)})}
 </div></div>
@@ -126,7 +144,7 @@ return (
     <h2>Categories</h2>
     <h6>Electronics</h6>
     <h6>Clothes</h6>
-    <h6>Automobile</h6>
+    <h6>Automobiles</h6>
     <h6>Furnitures and many more</h6>
     <button className="btn btn-danger" onClick={()=>{logout()}}>Logout</button>
 </div>
